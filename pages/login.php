@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <title>Connexion</title>
     <link rel="stylesheet" href="../assets/bootstrap.min.css">
-    <style>
-        body { margin: 30px; font-family: Arial, sans-serif; }
-        form { max-width: 400px; margin: auto; }
-    </style>
+    <link href="../assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="login.css">
 </head>
 <body>
     <h2 class="text-center mb-4">Connexion</h2>
@@ -22,6 +21,6 @@
         </div>
         <button type="submit" class="btn btn-success w-100">Se connecter</button>
     </form>
-     <a href="logout.php" class="btn btn-danger">Se déconnecter</a>
+     <a href="index.php" class="btn btn-danger">retour</a>
 </body>
 </html>

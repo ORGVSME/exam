@@ -3,26 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Page d'accueil</title>
-    <link rel="stylesheet" href="../assets/bootstrap.min.css"> <!-- Ton fichier Bootstrap -->
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 100px;
-        }
-        h1 {
-            margin-bottom: 50px;
-        }
-        .btn {
-            width: 200px;
-            margin: 10px;
-        }
-    </style>
+    <link href="../assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+
+  
 </head>
 <body>
-    <h1>Bienvenue sur la gestion d'emprunt</h1>
-    
-    <a href="inscription.php" class="btn btn-primary">Inscription</a>
-    <a href="login.php" class="btn btn-success">Connexion</a>
+
+    <h1>Bienvenue</h1>
+
+    <div class="d-flex flex-column align-items-center">
+        <a href="inscription.php" class="btn btn-primary btn-custom mb-3">Inscription</a>
+        <a href="login.php" class="btn btn-success btn-custom">Connexion</a>
+    </div>
+    <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

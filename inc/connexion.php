@@ -2,7 +2,7 @@
 function dbconnect(){
     static $connect = null ; 
     if ( $connect === null){
-        $connect = mysqli_connect('localhost' , 'ETU003960' , 'u78R7nwy' , 'db_s2_ETU003960');
+        $connect = mysqli_connect('localhost' , 'root' , '' , 'gestion_emprunt');
         if (!$connect){
             die('Erreur' . mysqli_connect_error());
         }
