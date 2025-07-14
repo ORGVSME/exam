@@ -30,22 +30,42 @@ CREATE TABLE objet (
     FOREIGN KEY (id_membre) REFERENCES membre(id_membre) 
 );
 
+ALTER TABLE objet
+ADD COLUMN id_membre_emprunteur INT NULL,
+ADD CONSTRAINT fk_objet_emprunteur FOREIGN KEY (id_membre_emprunteur) REFERENCES membre(id_membre);
+
 CREATE TABLE images_objet (
     id_image INT PRIMARY KEY AUTO_INCREMENT,
     id_objet INT, 
     nom_image VARCHAR(100), 
     FOREIGN KEY (id_objet) REFERENCES objet(id_objet) 
 );
+drop table images_objet;
 
 CREATE TABLE emprunt (
     id_emprunt INT PRIMARY KEY AUTO_INCREMENT, 
     id_objet INT, 
-    id_membre INT, 
+    id_proprietaire INT,
+    id_emprunteur INT,
     date_emprunt DATE, 
     date_retour DATE, 
     FOREIGN KEY (id_objet) REFERENCES objet(id_objet), 
-    FOREIGN KEY (id_membre) REFERENCES membre(id_membre) 
+    FOREIGN KEY (id_proprietaire) REFERENCES membre(id_membre),
+    FOREIGN KEY (id_emprunteur) REFERENCES membre(id_membre)
 );
+
+INSERT INTO emprunt (id_objet, id_proprietaire, id_emprunteur, date_emprunt, date_retour) VALUES
+(1, 1, 2, '2025-07-01', '2025-07-10'),
+(3, 1, 3, '2025-07-05', '2025-07-12'),
+(11, 2, 4, '2025-07-08', '2025-07-15'),
+(15, 2, 1, '2025-07-10', '2025-07-17'),
+(21, 3, 2, '2025-07-12', '2025-07-20'),
+(23, 4, 3, '2025-07-14', '2025-07-21'),
+(31, 3, 4, '2025-07-16', '2025-07-24'),
+(33, 4, 1, '2025-07-18', '2025-07-26'),
+(5, 1, 4, '2025-07-20', '2025-07-28'),
+(25, 2, 3, '2025-07-22', '2025-07-30');
+
 
 
 INSERT INTO membre (nom, date_naissance, genre, email, ville, mot_de_passe, photo) VALUES
@@ -104,58 +124,49 @@ INSERT INTO objet (nom_objet, id_categorie, id_membre) VALUES
 ('Couteau électrique', 4, 4);
 
 INSERT INTO images_objet (id_objet, nom_image) VALUES
-  (1, '../assets/picture/1.jpeg'),
-  (2, '../assets/picture/2.jpeg'),
-  (3, '../assets/picture/3.jpeg'),
-  (4, '../assets/picture/4.jpeg'),
-  (5, '../assets/picture/5.jpeg'),
-  (6, '../assets/picture/6.jpeg'),
-  (7, '../assets/picture/7.jpeg'),
-  (8, '../assets/picture/8.jpeg'),
-  (9, '../assets/picture/9.jpeg'),
-  (10, '../assets/picture/10.jpeg'),
-  (11, '../assets/picture/11.jpeg'),
-  (12, '../assets/picture/12.jpeg'),
-  (13, '../assets/picture/13.jpeg'),
-  (14, '../assets/picture/14.jpeg'),
-  (15, '../assets/picture/15.jpeg'),
-  (16, '../assets/picture/16.jpeg'),
-  (17, '../assets/picture/17.jpeg'),
-  (18, '../assets/picture/18.jpeg'),
-  (19, '../assets/picture/19.jpeg'),
-  (20, '../assets/picture/20.jpeg'),
-  (21, '../assets/picture/21.jpeg'),
-  (22, '../assets/picture/22.jpeg'),
-  (23, '../assets/picture/23.jpeg'),
-  (24, '../assets/picture/24.jpeg'),
-  (25, '../assets/picture/25.jpeg'),
-  (26, '../assets/picture/26.jpeg'),
-  (27, '../assets/picture/27.jpeg'),
-  (28, '../assets/picture/28.jpeg'),
-  (29, '../assets/picture/29.jpeg'),
-  (30, '../assets/picture/30.jpeg'),
-  (31, '../assets/picture/31.jpeg'),
-  (32, '../assets/picture/32.jpeg'),
-  (33, '../assets/picture/33.jpeg'),
-  (34, '../assets/picture/34.jpeg'),
-  (35, '../assets/picture/35.jpeg'),
-  (36, '../assets/picture/36.jpeg'),
-  (37, '../assets/picture/37.jpeg'),
-  (38, '../assets/picture/38.jpeg'),
-  (39, '../assets/picture/39.jpeg'),
-  (40, '../assets/picture/40.jpeg');
+ (1, '1.jpeg'),
+(2, '2.jpeg'),
+(3, '3.jpeg'),
+(4, '4.jpeg'),
+(5, '5.jpeg'),
+(6, '6.jpeg'),
+(7, '7.jpeg'),
+(8, '8.jpeg'),
+(9, '9.jpeg'),
+(10, '10.jpeg'),
+(11, '11.jpeg'),
+(12, '12.jpeg'),
+(13, '13.jpeg'),
+(14, '14.jpeg'),
+(15, '15.jpeg'),
+(16, '16.jpeg'),
+(17, '17.jpeg'),
+(18, '18.jpeg'),
+(19, '19.jpeg'),
+(20, '20.jpeg'),
+(21, '21.jpeg'),
+(22, '22.jpeg'),
+(23, '23.jpeg'),
+(24, '24.jpeg'),
+(25, '25.jpeg'),
+(26, '26.jpeg'),
+(27, '27.jpeg'),
+(28, '28.jpeg'),
+(29, '29.jpeg'),
+(30, '30.jpeg'),
+(31, '31.jpeg'),
+(32, '32.jpeg'),
+(33, '33.jpeg'),
+(34, '34.jpeg'),
+(35, '35.jpeg'),
+(36, '36.jpeg'),
+(37, '37.jpeg'),
+(38, '38.jpeg'),
+(39, '39.jpeg'),
+(40, '40.jpeg');
 
+ALTER TABLE emprunt DROP FOREIGN KEY emprunt_ibfk_2; -- clé étrangère sur id_membre
+ALTER TABLE emprunt DROP COLUMN id_membre;
 
-INSERT INTO emprunt (id_objet, id_membre, date_emprunt, date_retour) VALUES
-(1, 2, '2025-06-01', '2025-06-10'),
-(3, 3, '2025-06-05', NULL),
-(11, 4, '2025-06-07', '2025-06-15'),
-(15, 1, '2025-06-10', NULL),
-(21, 2, '2025-06-12', '2025-06-20'),
-(23, 4, '2025-06-15', NULL),
-(31, 3, '2025-06-18', '2025-06-25'),
-(33, 1, '2025-06-20', NULL),
-(5, 4, '2025-06-22', '2025-06-30'),
-(25, 2, '2025-06-25', NULL);
 
 ALTER TABLE objet CHANGE bgbbb nom_objet VARCHAR(50);

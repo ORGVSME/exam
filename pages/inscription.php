@@ -31,37 +31,22 @@
 </head>
 <body>
 
-    <h2>Inscription d'un nouveau membre</h2>
-
-    <form action="process_inscription.php" method="post" enctype="multipart/form-data">
-        <label for="nom">Nom :</label>
-        <input type="text" id="nom" name="nom" required maxlength="50" />
-
-        <label for="date_naissance">Date de naissance :</label>
-        <input type="date" id="date_naissance" name="date_naissance" required />
-
-        <label for="genre">Genre :</label>
-        <select id="genre" name="genre" required>
-            <option value="">-- Sélectionnez --</option>
-            <option value="M">Masculin</option>
-            <option value="F">Féminin</option>
-            <option value="A">Autre</option>
+<form action="process_membre.php" method="POST" enctype="multipart/form-data">
+    <label>Nom : <input type="text" name="nom" required></label><br>
+    <label>Date de naissance : <input type="date" name="date_naissance" required></label><br>
+    <label>Genre : 
+        <select name="genre" required>
+            <option value="M">Homme</option>
+            <option value="F">Femme</option>
         </select>
+    </label><br>
+    <label>Email : <input type="email" name="email" required></label><br>
+    <label>Ville : <input type="text" name="ville" required></label><br>
+    <label>Mot de passe : <input type="password" name="mot_de_passe" required></label><br>
+    <label>Photo de profil : <input type="file" name="photo" accept="image/*" required></label><br>
+    <input type="submit" value="S'inscrire">
+</form>
 
-        <label for="email">Email :</label>
-        <input type="email" id="email" name="email" required maxlength="50" />
-
-        <label for="ville">Ville :</label>
-        <input type="text" id="ville" name="ville" required maxlength="50" />
-
-        <label for="mot_de_passe">Mot de passe :</label>
-        <input type="password" id="mot_de_passe" name="mot_de_passe" required maxlength="50" />
-
-        <label for="photo">Photo (optionnelle) :</label>
-        <input type="file" id="photo" name="photo" accept="image/*" />
-
-        <input type="submit" value="S'inscrire" />
-    </form>
 
 </body>
 </html>

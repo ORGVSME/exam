@@ -1,48 +1,46 @@
 <?php
 require_once '../inc/connexion.php';
+session_start();
 
-// Vérifie que tous les champs requis sont bien présents
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $conn = dbconnect();
+// Vérifie que tous les champs du formulaire sont envoyés
+if (
+    isset($_POST['nom'], $_POST['date_naissance'], $_POST['genre'], $_POST['email'],
+    $_POST['ville'], $_POST['mot_de_passe']) && isset($_FILES['photo'])
+) {
+    $nom = $_POST['nom'];
+    $date_naissance = $_POST['date_naissance'];
+    $genre = $_POST['genre'];
+    $email = $_POST['email'];
+    $ville = $_POST['ville'];
+    $mot_de_passe = $_POST['mot_de_passe'];
 
-    // Récupération sécurisée des champs
-    $nom = $_POST['nom'] ?? '';
-    $date_naissance = $_POST['date_naissance'] ?? '';
-    $genre = $_POST['genre'] ?? '';
-    $email = $_POST['email'] ?? '';
-    $ville = $_POST['ville'] ?? '';
-    $mot_de_passe = $_POST['mot_de_passe'] ?? '';
-    $photo = '';
+    // Upload de la photo
+    $photo_name = $_FILES['photo']['name'];
+    $photo_tmp = $_FILES['photo']['tmp_name'];
+    $photo_path = "../uploads/" . basename($photo_name);
 
-    // Gestion de la photo si elle est envoyée
-    if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
-        $upload_dir = '../uploads/';
-        if (!file_exists($upload_dir)) {
-            mkdir($upload_dir, 0777, true);
+    if (move_uploaded_file($photo_tmp, $photo_path)) {
+        // Connexion à la base
+        $conn = dbconnect();
+
+        // Préparer et exécuter l’insertion
+        $query = "INSERT INTO membre (nom, date_naissance, genre, email, ville, mot_de_passe, photo) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $stmt = mysqli_prepare($conn, $query);
+        mysqli_stmt_bind_param($stmt, 'sssssss', $nom, $date_naissance, $genre, $email, $ville, $mot_de_passe, $photo_name);
+
+        if (mysqli_stmt_execute($stmt)) {
+            echo "Inscription réussie. <a href='login.php'>Se connecter</a>";
+        } else {
+            echo "Erreur lors de l'inscription : " . mysqli_error($conn);
         }
 
-        $filename = basename($_FILES['photo']['name']);
-        $target_file = $upload_dir . $filename;
-
-        if (move_uploaded_file($_FILES['photo']['tmp_name'], $target_file)) {
-            $photo = $filename;
-        }
-    }
-
-    // Requête d’insertion
-    $query = "INSERT INTO membre (nom, date_naissance, genre, email, ville, mot_de_passe, photo)
-              VALUES (?, ?, ?, ?, ?, ?, ?)";
-    $stmt = mysqli_prepare($conn, $query);
-    mysqli_stmt_bind_param($stmt, 'sssssss', $nom, $date_naissance, $genre, $email, $ville, $mot_de_passe, $photo);
-    mysqli_stmt_execute($stmt);
-
-    if (mysqli_stmt_affected_rows($stmt) > 0) {
-        header("Location: login.php?success=1");
-        exit;
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
     } else {
-        echo "Erreur lors de l'inscription.";
+        echo "Erreur lors de l’upload de la photo.";
     }
 } else {
-    echo "Méthode non autorisée.";
+    echo "Tous les champs sont requis.";
 }
 ?>

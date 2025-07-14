@@ -17,6 +17,7 @@
         <a href="inscription.php" class="btn btn-primary btn-custom mb-3">Inscription</a>
         <a href="login.php" class="btn btn-success btn-custom">Connexion</a>
     </div>
+
     <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

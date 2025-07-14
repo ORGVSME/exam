@@ -14,23 +14,34 @@ $membre = $_SESSION['membre'];
 <head>
     <meta charset="UTF-8">
     <title>Tableau de bord</title>
-    <link rel="stylesheet" href="../assets/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="dashboard.css">
+    
 </head>
 <body>
-    <div class="container mt-4">
-        <h2>Bienvenue, <?= htmlspecialchars($membre['nom']) ?> !</h2>
-        <p>Email : <?= htmlspecialchars($membre['email']) ?></p>
-        <p>Ville : <?= htmlspecialchars($membre['ville']) ?></p>
 
-        <?php if ($membre['photo']): ?>
-            <img src="../uploads/<?= htmlspecialchars($membre['photo']) ?>" alt="Photo de profil" width="150">
+<div class="container">
+    <div class="profile-card text-center">
+
+        <?php if (!empty($membre['photo'])): ?>
+            <img src="../uploads/<?= htmlspecialchars($membre['photo']) ?>" alt="Photo de profil">
+        <?php else: ?>
+            <img src="https://via.placeholder.com/120?text=Profil" alt="Photo de profil">
         <?php endif; ?>
 
-        <br><br>
-        <h3><a href="liste_objets.php">voici la liste des objets</a></h3>
+        <h3 class="mt-2"><?= htmlspecialchars($membre['nom']) ?></h3>
+        <p class="mb-1"><strong>Email :</strong> <?= htmlspecialchars($membre['email']) ?></p>
+        <p class="mb-1"><strong>Ville :</strong> <?= htmlspecialchars($membre['ville']) ?></p>
 
-        <br><br>
-        <a href="logout.php" class="btn btn-danger">Se déconnecter</a>
+        <div class="d-grid gap-2 mt-4">
+            <a href="liste_objets.php" class="btn btn-outline-primary">📦 Voir la liste des objets</a>
+            <a href="membre.php" class="btn btn-outline-primary"> voir la liste des membres de ce cite web </a>
+            <a href="emprunt.php" class="btn btn-outline-primary"> voir la liste des emprunts </a>
+            <a href="logout.php" class="btn btn-danger"> Se déconnecter</a>
+        </div>
     </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

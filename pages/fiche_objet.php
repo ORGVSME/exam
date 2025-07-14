@@ -1,5 +1,6 @@
 <?php
 require_once '../inc/function.php';
+session_start();
 
 $selectedCategorie = $_GET['categorie'] ?? 'all';
 $searchNom = $_GET['nom'] ?? '';
@@ -15,7 +16,6 @@ $objets = searchObjets($selectedCategorie, $searchNom, $filtreDisponible);
     <meta charset="UTF-8">
     <title>Liste des objets</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="liste_objet.css">
     <style>
         .card {
             width: 18rem;
@@ -25,19 +25,21 @@ $objets = searchObjets($selectedCategorie, $searchNom, $filtreDisponible);
             height: 180px;
             object-fit: cover;
         }
+        a {
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
 <div class="container mt-5">
 
-    <h1 class="text-center mb-4">Liste des Objets</h1>
-            <div class="d-grid">
-                <button class="btn btn-success" ><a href="dashboard.php">Retour</a></button>
-            </div>
-    <br><br>
+    <h1 class="text-center mb-4">🎒 Liste des Objets</h1>
 
+    <div class="d-grid">
+        <a href="dashboard.php" class="btn btn-outline-secondary">Retour au tableau de bord</a>
+    </div>
 
-    <div class="d-flex justify-content-end mb-3">
+    <div class="d-flex justify-content-end mb-3 mt-4">
         <a href="ajout_objet.php" class="btn btn-success">+ Ajouter un objet</a>
     </div>
 
@@ -78,26 +80,27 @@ $objets = searchObjets($selectedCategorie, $searchNom, $filtreDisponible);
             <?php foreach ($objets as $obj): ?>
                 <?php
                 $imgSrc = '../assets/picture/' . ($obj['nom_image'] ?? 'default.jpg');
-                $emprunte = $obj['date_emprunt'] ? 'Oui' : 'Non';
-                $dateRetour = $obj['date_retour'] ?? '-';
+                $estEmprunte = $obj['date_emprunt'] && (!$obj['date_retour'] || strtotime($obj['date_retour']) > time());
                 ?>
                 <div class="col">
-                    <div class="card h-100">
+                    <div class="card h-100 shadow">
                         <img src="<?= htmlspecialchars($imgSrc) ?>" class="card-img-top" alt="<?= htmlspecialchars($obj['nom_objet']) ?>">
                         <div class="card-body">
                             <h5 class="card-title"><?= htmlspecialchars($obj['nom_objet']) ?></h5>
                             <p class="card-text">
                                 <strong>Catégorie :</strong> <?= htmlspecialchars($obj['nom_categorie']) ?><br>
                                 <strong>Propriétaire :</strong> <?= htmlspecialchars($obj['proprietaire']) ?><br>
-                               <?php if ($obj['date_retour']): ?>
-    <p class="text-danger"><strong>Indisponible jusqu'au :</strong> <?= htmlspecialchars($obj['date_retour']) ?></p>
-<?php endif; ?>
-                       </p>
+                                <?php if ($estEmprunte): ?>
+                                    <span class="text-danger">Indisponible jusqu’au <?= htmlspecialchars($obj['date_retour']) ?></span>
+                                <?php else: ?>
+                                    <span class="text-success">Disponible</span>
+                                <?php endif; ?>
+                            </p>
                         </div>
                         <div class="card-footer text-center bg-white border-0 d-flex flex-column gap-2">
-                            <a href="#" class="btn btn-outline-primary">Voir détails</a>
-                            <?php if (!$obj['date_emprunt'] || $obj['date_retour']): ?>
-                                <a href="emprunt.php?id_objet=<?= $obj['id_objet'] ?>" class="btn btn-success mt-2">Emprunter</a>
+                            <a href="fiche_objet.php?id=<?= $obj['id_objet'] ?>" class="btn btn-outline-primary">Voir détails</a>
+                            <?php if (!$estEmprunte): ?>
+                                <a href="emprunt.php?id_objet=<?= $obj['id_objet'] ?>" class="btn btn-success">Emprunter</a>
                             <?php else: ?>
                                 <button class="btn btn-secondary" disabled>Déjà emprunté</button>
                             <?php endif; ?>
